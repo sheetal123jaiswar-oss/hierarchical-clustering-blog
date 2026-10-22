@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hierarchical Clustering | ML Lab</title>
+<style>
+:root{--purple:#7146d9;--dark:#251a43;--light:#f7f4ff;--pink:#f0a6d8;--muted:#716b83}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,sans-serif;background:#fff;color:var(--dark);line-height:1.65}
+nav{position:sticky;top:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:15px 7%;box-shadow:0 3px 18px #251a4310;z-index:5}
+.logo{font-weight:900;color:var(--purple);font-size:20px}
+nav a{color:var(--dark);text-decoration:none;margin-left:15px;font-size:13px}
+.hero{padding:70px 8%;background:linear-gradient(125deg,#f2ebff,#fff2fa);display:grid;grid-template-columns:1.2fr .8fr;gap:25px;align-items:center}
+.tag{background:#fff;border:1px solid #dfd1ff;padding:7px 12px;border-radius:30px;font-size:12px;color:var(--purple);font-weight:bold}
+h1{font-size:clamp(38px,6vw,64px);line-height:1.05;margin:24px 0}
+h1 span{color:var(--purple)}
+p{color:var(--muted)}
+.hero-card{background:white;padding:25px;border-radius:24px;box-shadow:0 15px 50px #7146d920}
+.tree{width:100%;height:auto}
+.student{font-size:13px;font-weight:bold;color:var(--purple)}
+.btn{display:inline-block;background:var(--purple);color:#fff;padding:12px 18px;border-radius:12px;text-decoration:none;border:0;cursor:pointer;font-weight:bold;margin-top:10px}
+section{padding:55px 8%}
+section:nth-of-type(even){background:var(--light)}
+.eyebrow{color:var(--purple);text-transform:uppercase;font-weight:bold;font-size:12px;letter-spacing:2px}
+h2{font-size:clamp(27px,4vw,38px);margin:7px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:25px}
+.card{background:#fff;padding:22px;border:1px solid #eee6ff;border-radius:18px}
+.icon{font-size:27px}
+.card h3{margin:8px 0}
+.formula{background:#251a43;color:#fff;padding:18px;border-radius:14px;font-family:monospace;overflow-wrap:anywhere;margin:12px 0}
+.panel{background:#fff;border:1px solid #e9e0ff;border-radius:20px;padding:23px;margin-top:20px}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:15px;margin:15px 0}
+select,input{padding:10px;border:1px solid #d7c9f5;border-radius:10px;max-width:100%}
+.chart{width:100%;min-height:260px;display:block}
+.note{background:#fff4d9;padding:13px;border-radius:12px;color:#654a17;font-size:14px}
+.steps{counter-reset:s}
+.step{padding:12px 15px;border-left:3px solid var(--pink);margin:12px 0;background:#fff;border-radius:0 12px 12px 0}
+.quiz button{display:block;width:100%;text-align:left;padding:13px;border:1px solid #e4d9fa;background:#fff;border-radius:10px;margin:9px 0;cursor:pointer}
+.quiz button:hover{border-color:var(--purple)}
+#feedback{font-weight:bold;margin-top:12px}
+footer{background:var(--dark);color:#fff;padding:35px 8%;text-align:center}
+footer p{color:#ddd}
+@media(max-width:700px){.hero{grid-template-columns:1fr;padding:45px 6%}.grid{grid-template-columns:1fr}nav{padding:13px 5%}nav a{margin-left:7px;font-size:11px}section{padding:42px 6%}}
+</style>
+</head>
+<body>
+<nav>
+ <div class="logo">✦ ML LAB</div>
+ <div><a href="#learn">Learn</a><a href="#demo">Demo</a><a href="#quiz">Quiz</a></div>
+</nav>
+
+<header class="hero">
+ <div>
+  <span class="tag">MACHINE LEARNING • UNSUPERVISED</span>
+  <h1>Data has a story.<br><span>Find its family.</span></h1>
+  <p>Discover Hierarchical Clustering — a machine learning technique that builds a tree of groups and reveals relationships hidden inside data.</p>
+  <p class="student">STUDENT PROJECT · SHEETAL JAISWAR · ROLL NO. 55034</p>
+  <a class="btn" href="#learn">Explore the concept ↓</a>
+ </div>
+ <div class="hero-card">
+  <svg class="tree" viewBox="0 0 320 230" role="img" aria-label="Illustration of a hierarchical clustering dendrogram">
+   <g fill="none" stroke="#a78be8" stroke-width="4" stroke-linecap="round">
+    <path d="M35 190 V150 H80 V110 H130 V65 H190 V30 H280"/>
+    <path d="M80 150 H115 V130 H155 V90 H210"/>
+    <path d="M130 110 H165 V80 H235"/>
+    <path d="M190 65 H260 V45 H280"/>
+   </g>
+   <g fill="#7146d9"><circle cx="35" cy="190" r="7"/><circle cx="80" cy="190" r="7"/><circle cx="115" cy="190" r="7"/><circle cx="155" cy="190" r="7"/></g>
+   <g fill="#ed8ccf"><circle cx="210" cy="190" r="7"/><circle cx="250" cy="190" r="7"/><circle cx="280" cy="190" r="7"/></g>
+   <text x="18" y="218" font-size="12" fill="#716b83">Individual data points → groups</text>
+  </svg>
+  <h3>One tree. Many relationships.</h3>
+  <p>Similar data points join together step by step.</p>
+ </div>
+</header>
+
+<section id="learn">
+ <span class="eyebrow">01 / The basics</span>
+ <h2>What is Hierarchical Clustering?</h2>
+ <p>Hierarchical clustering is an unsupervised learning algorithm that groups similar data points into a hierarchy. The relationships are often displayed using a tree-shaped diagram called a <b>dendrogram</b>. You can choose a cut level on the tree to decide the number of clusters.</p>
+ <div class="grid">
+  <div class="card"><div class="icon">🌱</div><h3>Unsupervised</h3><p>It discovers patterns without requiring pre-labelled target categories.</p></div>
+  <div class="card"><div class="icon">🌳</div><h3>Tree structure</h3><p>Clusters join or split at different levels, showing their relationships.</p></div>
+  <div class="card"><div class="icon">✂️</div><h3>Choose a cut</h3><p>Cut the dendrogram at a selected height to obtain groups.</p></div>
+ </div>
+ <h2 style="margin-top:35px">Learning objectives</h2>
+ <ul>
+  <li>Understand the meaning of hierarchical clustering.</li>
+  <li>Differentiate agglomerative and divisive approaches.</li>
+  <li>Explain dendrograms, distance measures and linkage methods.</li>
+  <li>Explore how the number of clusters changes the grouping.</li>
+ </ul>
+</section>
+
+<section id="demo">
+ <span class="eyebrow">02 / Interactive playground</span>
+ <h2>Build your cluster tree</h2>
+ <p>Change the number of clusters and inspect this illustrative dendrogram. The example demonstrates the idea; it is not a calculation on a real dataset.</p>
+ <div class="panel">
+  <div class="controls">
+   <label for="clusters"><b>Number of clusters:</b></label>
+   <select id="clusters">
+    <option value="2">2 clusters</option><option value="3" selected>3 clusters</option><option value="4">4 clusters</option><option value="5">5 clusters</option>
+   </select>
+   <button class="btn" id="reset" type="button">Reset</button>
+  </div>
+  <svg id="dendrogram" class="chart" viewBox="0 0 620 290" role="img" aria-label="Illustrative dendrogram showing clusters merging"></svg>
+  <p id="clusterText"><b>3 clusters selected.</b> The horizontal cut separates the leaves into three groups.</p>
+  <div class="note">Remember: a dendrogram's vertical height represents the distance or dissimilarity at which groups merge. The exact values depend on the dataset and linkage method.</div>
+ </div>
+</section>
+
+<section>
+ <span class="eyebrow">03 / How it works</span>
+ <h2>Two approaches to building a hierarchy</h2>
+ <div class="grid">
+  <div class="card"><div class="icon">⬆️</div><h3>Agglomerative</h3><p>Bottom-up approach. Start with each data point as its own cluster, then repeatedly merge the closest clusters.</p></div>
+  <div class="card"><div class="icon">⬇️</div><h3>Divisive</h3><p>Top-down approach. Start with all points in one cluster and repeatedly split groups into smaller ones.</p></div>
+  <div class="card"><div class="icon">📏</div><h3>Distance + linkage</h3><p>Distance measures similarity; linkage defines how
